@@ -5,8 +5,10 @@
  */
 
 /*
- * Base on https://github.com/khadas/common_drivers/blob/5ec200ae3f88476f1c3b212c311b0297dd90b916/arch/arm64/boot/dts/amlogic/kvim4.dts
+ * Base on https://github.com/khadas/common_drivers/blob/khadas-vims-5.15.y/arch/arm64/boot/dts/amlogic/kvim4.dts
  * branch: khadas-vims-5.15.y
+ * Date: Aug 22, 2024
+ * Commit: e66ced74ddc2fc7148ac0a180e3e15d5809c8e62
  */
 
 /dts-v1/;
