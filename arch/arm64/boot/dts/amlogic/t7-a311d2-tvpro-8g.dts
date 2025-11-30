@@ -310,6 +310,21 @@
 		};
 	};
 
+	pwm_gpio: pwm-gpio {
+		compatible = "pwm-gpio";
+		#pwm-cells = <3>;
+		pwm-gpios = <&gpio GPIOH_1 GPIO_ACTIVE_HIGH>;
+	};
+
+	pwm_fan: pwm-fan {
+		compatible = "pwm-fan";
+		pwms = <&pwm_gpio 0 40000 1>;
+		cooling-min-state = <0>;
+		cooling-max-state = <3>;
+		#cooling-cells = <2>;
+		cooling-levels = <0 120 170 220>;
+	};
+
 	smmu: aml_smmu {
 		compatible = "amlogic,smmu";
 		status = "okay";
