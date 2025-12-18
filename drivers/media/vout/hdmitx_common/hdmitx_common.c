@@ -99,8 +99,10 @@ int hdmitx_common_validate_vic(struct hdmitx_common *tx_comm, u32 vic)
 {
 	const struct hdmi_timing *timing = hdmitx_mode_vic_to_hdmi_timing(vic);
 
-	if (!timing)
+	if (!timing) {
+		HDMITX_ERROR("vic[%d] timing lookup failed - hdmitx_mode_vic_to_hdmi_timing returned NULL\n", vic);
 		return -EINVAL;
+	}
 
 	/*soc level filter*/
 	/*filter 1080p max size.*/
@@ -108,41 +110,62 @@ int hdmitx_common_validate_vic(struct hdmitx_common *tx_comm, u32 vic)
 		/* if the vic equals to HDMI_0_UNKNOWN or VESA,
 		 * then create it as over limited
 		 */
-		if (vic == HDMI_0_UNKNOWN || vic >= HDMITX_VESA_OFFSET)
+		if (vic == HDMI_0_UNKNOWN || vic >= HDMITX_VESA_OFFSET) {
+
+				HDMITX_ERROR("vic[%d] res_1080p: VIC_UNKNOWN/VESA check failed\n", vic);
 			return -ERANGE;
+		}
 		/* check the resolution is over 1920x1080 or not */
-		if (timing->h_active > 1920 || timing->v_active > 1080)
+		if (timing->h_active > 1920 || timing->v_active > 1080) {
+
+				HDMITX_ERROR("vic[%d] res_1080p: resolution check failed (%dx%d)\n",
+					vic, timing->h_active, timing->v_active);
 			return -ERANGE;
+		}
 
 		/* check the fresh rate is over 60hz or not */
-		if (timing->v_freq > 60000)
+		if (timing->v_freq > 60000) {
+
+				HDMITX_ERROR("vic[%d] res_1080p: refresh rate check failed (%d > 60000)\n",
+					vic, timing->v_freq);
 			return -ERANGE;
+		}
 
 		/* test current vic is over 150MHz or not */
-		if (timing->pixel_freq > 150000)
+		if (timing->pixel_freq > 150000) {
+
+				HDMITX_ERROR("vic[%d] res_1080p: pixel freq check failed (%d > 150000)\n",
+					vic, timing->pixel_freq);
 			return -ERANGE;
+		}
 	}
 
 	/* efuse ctrl all 4k mode */
 	if (tx_comm->efuse_dis_output_4k)
-		if (timing->v_active >= 2160)
+		if (timing->v_active >= 2160) {
+			HDMITX_ERROR("vic[%d] efuse_dis_output_4k check failed\n", vic);
 			return -ERANGE;
+		}
 
 	/* efuse ctrl 4k50, 4k60 */
 	if (tx_comm->efuse_dis_hdmi_4k60)
-		if (timing->v_active >= 2160 && timing->v_freq >= 5000)
+		if (timing->v_active >= 2160 && timing->v_freq >= 5000) {
+			HDMITX_ERROR("vic[%d] efuse_dis_hdmi_4k60 check failed\n", vic);
 			return -ERANGE;
+		}
 
 	/*filter max refreshrate.*/
 	if (timing->v_freq > (tx_comm->max_refreshrate * 1000)) {
-		//HDMITX_INFO("validate refreshrate (%s)-(%d) fail\n",
-		//timing->name, timing->v_freq);
+		HDMITX_ERROR("vic[%d] max_refreshrate check failed: v_freq=%d, max=%d\n",
+			vic, timing->v_freq, tx_comm->max_refreshrate);
 		return -EACCES;
 	}
 
 	/*ip level filter*/
-	if (hdmitx_hw_validate_mode(tx_comm->tx_hw, vic) != 0)
+	if (hdmitx_hw_validate_mode(tx_comm->tx_hw, vic) != 0) {
+		HDMITX_ERROR("vic[%d] hw_validate_mode check failed\n", vic);
 		return -EPERM;
+	}
 
 	return 0;
 }

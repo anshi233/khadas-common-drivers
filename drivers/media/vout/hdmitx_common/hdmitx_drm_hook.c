@@ -136,14 +136,16 @@ int hdmitx_common_get_vic_list(int **vics)
 
 		/* step2, check if VIC is supported by SOC hdmitx */
 		if (hdmitx_common_validate_vic(global_tx_base, vic) != 0) {
-			//HDMITX_ERROR("%s: vic[%d] over range.\n", __func__, vic);
+			if (vic == 63) /* 1080p120 */
+				HDMITX_ERROR("%s: vic[%d] over range.\n", __func__, vic);
 			continue;
 		}
 		/* step3, build format with basic mode/attr and check
 		 * if it's supported by EDID/hdmitx_cap
 		 */
 		if (hdmitx_common_check_valid_para_of_vic(global_tx_base, vic) != 0) {
-			//HDMITX_ERROR("%s: vic[%d] check fmt attr failed.\n", __func__, vic);
+			if (vic == 63) /* 1080p120 */
+				HDMITX_ERROR("%s: vic[%d] check fmt attr failed.\n", __func__, vic);
 			continue;
 		}
 

@@ -638,7 +638,8 @@ static int hdmitx_validate_mode(struct hdmitx_hw_common *tx_hw, u32 vic)
 	case MESON_CPU_ID_S7:
 	case MESON_CPU_ID_T7:
 	default:
-		ret = soc_resolution_limited(timing, 2160) && soc_freshrate_limited(timing, 60);
+	    //patch here to support 4k120hz
+		ret = soc_resolution_limited(timing, 2160) && soc_freshrate_limited(timing, 120);
 		break;
 	}
 	return (ret == 1) ? 0 : -EINVAL;
