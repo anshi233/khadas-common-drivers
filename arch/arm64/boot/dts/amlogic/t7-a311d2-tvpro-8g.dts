@@ -1442,7 +1442,7 @@
 };
 
 &i2c1 {
-	status = "okay";
+	status = "disabled";
 	pinctrl-names = "default";
 	pinctrl-0 = <&i2c1_pins1>;
 	clock-frequency = <400000>;
@@ -1902,7 +1902,7 @@
 	wb_en = <0>; /* 1: enable; 0: disable */
 	cm_en = <0>; /* 1: enable; 0: disable */
 	wb_sel = <0>; /* 1: mtx; 0: gainoff */
-	vlock_en = <1>; /* 1: enable; 0: disable */
+	vlock_en = <0>; /* 1: enable; 0: disable */
 	vlock_mode = <0x8>;
 	/*
 	 * vlock work mode

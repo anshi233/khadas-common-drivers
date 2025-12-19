@@ -1246,8 +1246,9 @@ void hdmitx_register_vrr(struct hdmitx_dev *hdev)
 	if (!vinfo || vinfo->mode != VMODE_HDMI)
 		return;
 	vrr->output_src = VRR_OUTPUT_ENCP;
-	vrr->vfreq_max = prxcap->vrr_min;
-	vrr->vfreq_min = prxcap->vrr_max;
+	//stream_box: patch: place vfreq_max and vfreq_min at correct location
+	vrr->vfreq_max = prxcap->vrr_max;
+	vrr->vfreq_min = prxcap->vrr_min;
 	vrr->vline_max =
 		vinfo->vtotal * (prxcap->vrr_max / prxcap->vrr_min);
 	if (prxcap->vrr_max == 0)
