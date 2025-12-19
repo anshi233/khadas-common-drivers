@@ -1915,6 +1915,7 @@
 	 */
 	vlock_pll_m_limit = <1>;
 	vlock_line_limit = <2>;
+	vrr_priority = <1>;/*1:game mode vrr always on;0:vrr on depend on vrr signal*/
 };
 
 &aml_wifi{
