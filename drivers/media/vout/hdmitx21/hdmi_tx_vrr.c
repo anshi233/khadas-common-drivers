@@ -1227,6 +1227,20 @@ void hdmitx_unregister_vrr(struct hdmitx_dev *hdev)
 	HDMITX_INFO("%s ret = %d\n", __func__, ret);
 }
 
+/* Wrapper function to be called from common code */
+void hdmitx_register_vrr_from_common(struct hdmitx_common *tx_comm)
+{
+	struct hdmitx_dev *hdev;
+
+	if (!tx_comm)
+		return;
+
+	/* Convert hdmitx_common to hdmitx_dev using container_of */
+	hdev = container_of(tx_comm, struct hdmitx_dev, tx_comm);
+
+	hdmitx_register_vrr(hdev);
+}
+
 static struct vinfo_s *hdmitx_get_curvinfo(void *data)
 {
 	struct hdmitx_dev *hdev = get_hdmitx21_device();

@@ -226,6 +226,14 @@ static int hdmitx_common_post_enable_mode(struct hdmitx_common *tx_comm,
 	tx_comm->ready = 1;
 	edidinfo_attach_to_vinfo(tx_comm);
 	update_vinfo_from_formatpara(tx_comm);
+#ifndef CONFIG_AMLOGIC_ZAPPER_CUT
+	/* Register VRR device after vinfo is updated (hdmitx21 specific)
+	 * Forward declaration - implemented in hdmitx21/hdmi_tx_vrr.c
+	 */
+	extern void hdmitx_register_vrr_from_common(struct hdmitx_common *tx_comm);
+	if (tx_comm->ctrl_ops && tx_comm->ctrl_ops->init_uboot_mode)
+		hdmitx_register_vrr_from_common(tx_comm);
+#endif
 
 	return 0;
 }
