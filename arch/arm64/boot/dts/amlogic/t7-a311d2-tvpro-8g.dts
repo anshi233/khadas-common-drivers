@@ -278,10 +278,11 @@
 			compatible = "shared-dma-pool";
 			reusable;
 			/*
-			 * up to 1920x1080 yuv422 8bit and 5 buffers
-			 * 1920 x 1080 x 2 x 5 = 20M
+			 * 4K RGB 5 buffers
+			 * 3840 x 2160 x 4 x 5 = 165,888,000 bytes ~= 158.2 MB
+			 * Using 160 MB (0x0A000000) for alignment and headroom
 			 */
-			size = <0x0 0x01400000>;
+			size = <0x0 0x0A000000>;
 			alignment = <0x0 0x400000>;
 			alloc-ranges = <0x0 0x0 0x0 0xe0000000>;
 		};
